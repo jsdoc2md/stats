@@ -12,7 +12,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var UsageStats = require('app-usage-stats');
 
-module.exports = function (SuperClass) {
+module.exports = function (SuperClass, version) {
   return function (_SuperClass) {
     _inherits(JsdocToMarkdownStats, _SuperClass);
 
@@ -23,7 +23,7 @@ module.exports = function (SuperClass) {
 
       _this._usage = new UsageStats('UA-70853320-3', {
         name: 'jsdoc2md',
-        version: require('../../package').version,
+        version: version,
         sendInterval: 1000 * 60 * 60 * 24,
         metricMap: {
           invocation: 1,

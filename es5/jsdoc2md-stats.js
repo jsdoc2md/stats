@@ -11,6 +11,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var UsageStats = require('app-usage-stats');
+var os = require('os');
 
 module.exports = function (SuperClass, version) {
   return function (_SuperClass) {
@@ -52,6 +53,9 @@ module.exports = function (SuperClass, version) {
           exception: 5
         }
       });
+
+      _this._usage.defaults.set('cd1', process.version).set('cd2', os.type()).set('cd3', os.release()).set('cd4', 'api');
+
       _this._usage.loadSync();
       _this._interface = 'api';
       _this._sendOptions = { timeout: 2000 };

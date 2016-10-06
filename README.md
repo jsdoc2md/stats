@@ -6,3 +6,4 @@
 
 # jsdoc2md-stats
 
+Keeps count of features used in jsdoc2md. Posts no more than one request to GA per 24 hours.

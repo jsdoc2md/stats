@@ -46,7 +46,7 @@ module.exports = function (SuperClass, version) {
           'property-list-format': 17,
           'member-index-format': 18,
           private: 19,
-          cache: 20
+          'no-cache': 20
         },
         dimensionMap: {
           interface: 4,
@@ -85,18 +85,16 @@ module.exports = function (SuperClass, version) {
 
         options = options || {};
         if (options['no-usage-stats']) this._usage.disable();
-        return method.call(SuperClass.prototype, options).then(function (output) {
-          return _this2._hit(method, options).then(function () {
-            return output;
-          }).catch(function () {
-            return output;
-          });
-        }).catch(function (err) {
+        return Promise.all([this._hit(method, options).catch(function (err) {
+          return '';
+        }), method.call(SuperClass.prototype, options).catch(function (err) {
           return _this2._hit(method, options, err.toString()).then(function () {
             throw err;
           }).catch(function () {
             throw err;
           });
+        })]).then(function (results) {
+          return results[1];
         });
       }
     }, {

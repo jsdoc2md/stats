@@ -1,7 +1,7 @@
 {
   "name": "jsdoc2md-stats",
   "author": "Lloyd Brookes <75pound@gmail.com>",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Usage stats for jsdoc2md",
   "repository": "https://github.com/jsdoc2md/stats.git",
   "license": "MIT",

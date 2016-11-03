@@ -22,32 +22,36 @@ module.exports = function (SuperClass, version) {
 
       var _this = _possibleConstructorReturn(this, (JsdocToMarkdownStats.__proto__ || Object.getPrototypeOf(JsdocToMarkdownStats)).call(this));
 
+      var metricMap = {
+        invocation: 1,
+        source: 2,
+        configure: 3,
+        html: 4,
+        template: 5,
+        'heading-depth': 6,
+        'example-lang': 7,
+        plugin: 8,
+        helper: 9,
+        partial: 10,
+        'name-format': 11,
+        'no-gfm': 12,
+        separators: 13,
+        'module-index-format': 14,
+        'global-index-format': 15,
+        'param-list-format': 16,
+        'property-list-format': 17,
+        'member-index-format': 18,
+        private: 19,
+        'no-cache': 20
+      };
+      if (SuperClass.name === 'Jsdoc2md1') {
+        metricMap.conf = 3;
+      }
       _this._usage = new UsageStats('UA-70853320-3', {
         name: 'jsdoc2md',
         version: version,
         sendInterval: 1000 * 60 * 60 * 24,
-        metricMap: {
-          invocation: 1,
-          source: 2,
-          configure: 3,
-          html: 4,
-          template: 5,
-          'heading-depth': 6,
-          'example-lang': 7,
-          plugin: 8,
-          helper: 9,
-          partial: 10,
-          'name-format': 11,
-          'no-gfm': 12,
-          separators: 13,
-          'module-index-format': 14,
-          'global-index-format': 15,
-          'param-list-format': 16,
-          'property-list-format': 17,
-          'member-index-format': 18,
-          private: 19,
-          'no-cache': 20
-        },
+        metricMap: metricMap,
         dimensionMap: {
           interface: 4,
           exception: 5
@@ -58,7 +62,7 @@ module.exports = function (SuperClass, version) {
 
       _this._usage.loadSync();
       _this._interface = 'api';
-      _this._sendOptions = { timeout: 2000 };
+      _this._sendOptions = { timeout: 3000 };
 
       process.on('exit', function () {
         return _this._usage.saveSync();
@@ -112,6 +116,21 @@ module.exports = function (SuperClass, version) {
         }
       }
     }, {
+      key: '_statsStream',
+      value: function _statsStream(method, options) {
+        var _this3 = this;
+
+        options = options || {};
+        if (options['no-usage-stats']) this._usage.disable();
+        var output = method.call(SuperClass.prototype, options);
+        this._hit(method, options);
+        output.once('error', function (err) {
+          _this3._hit(method, options, err.toString());
+          output.emit('error', err);
+        });
+        return output;
+      }
+    }, {
       key: 'render',
       value: function render(options) {
         return this._stats(_get(JsdocToMarkdownStats.prototype.__proto__ || Object.getPrototypeOf(JsdocToMarkdownStats.prototype), 'render', this), options);
@@ -150,6 +169,18 @@ module.exports = function (SuperClass, version) {
       key: 'getNamepaths',
       value: function getNamepaths(options) {
         return this._stats(_get(JsdocToMarkdownStats.prototype.__proto__ || Object.getPrototypeOf(JsdocToMarkdownStats.prototype), 'getNamepaths', this), options);
+      }
+    }, {
+      key: 'renderStream',
+      value: function renderStream(options, iface) {
+        if (iface) {
+          if (iface === 'test') {
+            this._usage.disable();
+          } else {
+            this._interface = iface;
+          }
+        }
+        return this._statsStream(_get(JsdocToMarkdownStats.prototype.__proto__ || Object.getPrototypeOf(JsdocToMarkdownStats.prototype), 'renderStream', this), options);
       }
     }]);
 

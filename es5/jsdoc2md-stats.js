@@ -48,8 +48,8 @@ module.exports = function (SuperClass, version) {
         metricMap.conf = 3;
       }
       _this._usage = new UsageStats('UA-70853320-3', {
-        name: 'jsdoc2md',
-        version: version,
+        an: 'jsdoc2md',
+        av: version,
         sendInterval: 1000 * 60 * 60 * 24,
         metricMap: metricMap,
         dimensionMap: {
